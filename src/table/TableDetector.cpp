@@ -92,7 +92,7 @@ namespace tabletop
                      "The distance used as a threshold when finding a plane", 0.02);
       params.declare(&TableDetector::table_cluster_tolerance_, "table_cluster_tolerance",
                      "The distance used when clustering a plane", 0.2);
-      params.declare(&TableDetector::up_frame_id_, "vertical_frame_id", "The vertical frame id", "/map");
+      params.declare(&TableDetector::up_frame_id_, "vertical_frame_id", "The vertical frame id", "/odom");
     }
 
     static void
@@ -112,11 +112,12 @@ namespace tabletop
     configure(const tendrils& params, const tendrils& inputs, const tendrils& outputs)
     {
       ros::NodeHandle nh("~");
-      nh.param("filter_planes", filter_planes_, false);
-      nh.param("min_table_height", min_table_height_, 0.5);
-      nh.param("max_table_height", max_table_height_, 1.0);
+      nh.param("filter_planes", filter_planes_, true);
+      nh.param("min_table_height", min_table_height_, 0.05);
+      nh.param("max_table_height", max_table_height_, 2.0);
       nh.param("robot_frame", robot_frame_id_, std::string("/base_link"));
-      nh.param("sensor_frame", sensor_frame_id_, std::string("/head_mount_kinect_rgb_optical_frame"));
+      nh.param("sensor_frame", sensor_frame_id_, std::string("/camera1_color_optical_frame"));
+      //nh.param("sensor_frame", sensor_frame_id_, std::string("/camera1_link_optical_1"));
 
       double max_angle_diff;
       double table_normal_x;
